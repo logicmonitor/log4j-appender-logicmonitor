@@ -1,0 +1,63 @@
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'com.logicmonitor'
+version = '0.0.01-alpha'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    maven {
+        credentials {
+            username = System.getenv("GITHUB_USERNAME")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+        url "https://maven.pkg.github.com/logicmonitor/lm-data-sdk-java"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.logicmonitor:lm-data-sdk:0.0.2-alpha'
+    implementation 'org.apache.logging.log4j:log4j-core:2.11.0'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    // https://mvnrepository.com/artifact/io.gsonfire/gson-fire
+    implementation group: 'io.gsonfire', name: 'gson-fire', version: '1.7.1'
+
+
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            version = version
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+}
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+tasks.named('test') {
+    useJUnitPlatform()
+}
