@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="com.logicmonitor.log4j2appender">
+  <Appenders>
+    <Console name="LogToConsole" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+    <LMAppender name="LogToLmLogs">
+        <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+    </LMAppender>
+  </Appenders>
+  <Loggers>
+    <Logger name="com.example" level="debug" additivity="false">
+      <AppenderRef ref="LogToConsole"/>
+      <AppenderRef ref="LogToLmLogs"/>
+    </Logger>
+    <Root level="error">
+      <AppenderRef ref="LogToConsole"/>
+      <AppenderRef ref="LogToLmLogs"/>
+    </Root>
+  </Loggers>
+</Configuration>
